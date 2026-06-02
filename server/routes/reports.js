@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const TestReport = require('../models/TestReport');
-const Patient = require('../models/Patient');
+const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
 // GET /api/reports/patient/:patientId — get all reports for a patient

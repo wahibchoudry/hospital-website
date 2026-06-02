@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Patient = require('../models/Patient');
+const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
 // GET /api/patients/search/:patientId — Search patient by ID

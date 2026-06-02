@@ -61,7 +61,7 @@ router.post('/login', async (req, res) => {
 router.post('/patient-login', async (req, res) => {
   try {
     const { patientId, phone } = req.body;
-    const Patient = require('../models/Patient');
+    const Patient = require('../models/patient');
     const patient = await Patient.findOne({ 
       patientId: patientId.toUpperCase() 
     });

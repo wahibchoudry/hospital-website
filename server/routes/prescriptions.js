@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Prescription = require('../models/Prescription');
-const Patient = require('../models/Patient');
+const Prescription = require('../models/prescription');
+const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
 // GET /api/prescriptions/patient/:patientId — All prescriptions for a patient
