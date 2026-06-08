@@ -7,7 +7,7 @@ const s = {
   sub: { color: '#718096', marginBottom: '2rem' },
   searchCard: { background: 'white', borderRadius: '16px', padding: '2rem', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', marginBottom: '2rem' },
   searchRow: { display: 'flex', gap: '1rem' },
-  input: { flex: 1, padding: '0.75rem 1rem', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '1rem', outline: 'none', textTransform: 'uppercase' },
+  input: { flex: 1, padding: '0.75rem 1rem', border: '2px solid #e2e8f0', borderRadius: '8px', fontSize: '1rem', outline: 'none' },
   btn: { padding: '0.75rem 1.5rem', background: '#6b46c1', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '600' },
   greenBtn: { padding: '0.75rem 1.5rem', background: '#276749', color: 'white', border: 'none', borderRadius: '8px', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' },
   error: { background: '#fff5f5', color: '#c53030', padding: '0.75rem 1rem', borderRadius: '8px', marginTop: '1rem', fontSize: '0.9rem' },
@@ -79,7 +79,7 @@ export default function ClinicDashboard() {
     e.preventDefault();
     setSaving(true);
     try {
-      await api.post('/reports', { patientId: query.trim(), clinicName: 'City Lab', ...form });
+      await api.post('/reports', { cnicId: query.trim(), clinicName: 'City Lab', ...form });
       setSaveSuccess('Report added successfully!');
       setShowModal(false);
       setForm({ testName: '', result: '', normalRange: '', status: 'Normal', notes: '', reportDate: '' });
@@ -101,10 +101,10 @@ export default function ClinicDashboard() {
       <p style={s.sub}>Search patient to view prescriptions and add test reports</p>
 
       <div style={s.searchCard}>
-        <p style={{ fontWeight: '600', marginBottom: '1rem', color: '#2d3748' }}>🔍 Search patient by ID</p>
+        <p style={{ fontWeight: '600', marginBottom: '1rem', color: '#2d3748' }}>🔍 Search patient by CNIC</p>
         <form onSubmit={handleSearch}>
           <div style={s.searchRow}>
-            <input style={s.input} placeholder="Enter patient ID (e.g. PT001)" value={query} onChange={e => setQuery(e.target.value.toUpperCase())} />
+            <input style={s.input} placeholder="Enter CNIC number (e.g. 3520212345678)" value={query} onChange={e => setQuery(e.target.value)} />
             <button style={s.btn} type="submit" disabled={loading}>{loading ? 'Searching...' : 'Search'}</button>
           </div>
         </form>
@@ -117,7 +117,7 @@ export default function ClinicDashboard() {
           <div style={s.patientCard}>
             <div>
               <div style={s.patientName}>{patient.name}</div>
-              <div style={{ fontSize: '0.9rem', opacity: 0.85 }}>ID: {patient.patientId}</div>
+              <div style={{ fontSize: '0.9rem', opacity: 0.85 }}>CNIC: {patient.cnicId}</div>
               <div style={s.infoGrid}>
                 <div style={s.infoItem}>Age: <span style={s.infoVal}>{patient.age}</span></div>
                 <div style={s.infoItem}>Gender: <span style={s.infoVal}>{patient.gender}</span></div>

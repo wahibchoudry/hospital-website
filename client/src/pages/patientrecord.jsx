@@ -55,7 +55,7 @@ const s = {
 const emptyMed = { name: '', dosage: '', frequency: '', duration: '' };
 
 export default function PatientRecord() {
-  const { patientId } = useParams();
+  const { cnicId } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,7 @@ export default function PatientRecord() {
 
   const fetchData = async () => {
     try {
-      const { data: res } = await api.get(`/prescriptions/patient/${patientId}`);
+      const { data: res } = await api.get(`/prescriptions/patient/${cnicId}`);
       setData(res);
     } catch {
       navigate('/');
@@ -74,7 +74,7 @@ export default function PatientRecord() {
     }
   };
 
-  useEffect(() => { fetchData(); }, [patientId]);
+  useEffect(() => { fetchData(); }, [cnicId]);
 
   const addMedRow = () => setForm(f => ({ ...f, medicines: [...f.medicines, { ...emptyMed }] }));
   const removeMedRow = (i) => setForm(f => ({ ...f, medicines: f.medicines.filter((_, idx) => idx !== i) }));
@@ -86,7 +86,7 @@ export default function PatientRecord() {
     e.preventDefault();
     setSaving(true);
     try {
-      await api.post('/prescriptions', { patientId, ...form });
+      await api.post('/prescriptions', { cnicId, ...form });
       setShowModal(false);
       setForm({ diagnosis: '', medicines: [{ ...emptyMed }], notes: '', followUpDate: '' });
       await fetchData();
@@ -109,7 +109,7 @@ export default function PatientRecord() {
       <div style={s.header}>
         <div>
           <div style={s.headerTitle}>{patient.name}</div>
-          <div style={s.headerSub}>Patient ID: {patient.patientId}</div>
+          <div style={s.headerSub}>CNIC: {patient.cnicId}</div>
           <div style={s.infoGrid}>
             <div style={s.infoItem}>Age: <span style={s.infoVal}>{patient.age}</span></div>
             <div style={s.infoItem}>Gender: <span style={s.infoVal}>{patient.gender}</span></div>

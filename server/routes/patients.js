@@ -3,11 +3,11 @@ const router = express.Router();
 const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
-// GET /api/patients/search/:patientId — Search patient by ID
-router.get('/search/:patientId', authMiddleware, async (req, res) => {
+// GET /api/patients/search/:cnicId — Search patient by CNIC
+router.get('/search/:cnicId', authMiddleware, async (req, res) => {
   try {
     const patient = await Patient.findOne({
-      patientId: req.params.patientId.toUpperCase(),
+      cnicId: req.params.cnicId,
     });
 
     if (!patient) {
@@ -35,14 +35,14 @@ router.get('/', authMiddleware, async (req, res) => {
 // POST /api/patients — Add new patient
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { patientId, name, age, gender, phone, bloodGroup, address, allergies } = req.body;
+    const { cnicId, name, age, gender, phone, bloodGroup, address, allergies } = req.body;
 
-    const existing = await Patient.findOne({ patientId: patientId.toUpperCase() });
+    const existing = await Patient.findOne({ cnicId });
     if (existing) {
-      return res.status(400).json({ message: 'Patient ID already exists' });
+      return res.status(400).json({ message: 'CNIC already registered' });
     }
 
-    const patient = new Patient({ patientId, name, age, gender, phone, bloodGroup, address, allergies });
+    const patient = new Patient({ cnicId, name, age, gender, phone, bloodGroup, address, allergies });
     await patient.save();
 
     res.status(201).json(patient);

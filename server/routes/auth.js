@@ -60,19 +60,17 @@ router.post('/login', async (req, res) => {
 // POST /api/auth/patient-login
 router.post('/patient-login', async (req, res) => {
   try {
-    const { patientId, phone } = req.body;
+    const { cnicId, phone } = req.body;
     const Patient = require('../models/patient');
-    const patient = await Patient.findOne({ 
-      patientId: patientId.toUpperCase() 
-    });
-    if (!patient) return res.status(400).json({ message: 'Patient ID not found' });
+    const patient = await Patient.findOne({ cnicId });
+    if (!patient) return res.status(400).json({ message: 'CNIC not found' });
     if (patient.phone !== phone) return res.status(400).json({ message: 'Phone number incorrect' });
     const token = jwt.sign(
-      { id: patient._id, patientId: patient.patientId, role: 'patient' },
+      { id: patient._id, cnicId: patient.cnicId, role: 'patient' },
       process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
-    res.json({ token, patient: { id: patient._id, name: patient.name, patientId: patient.patientId } });
+    res.json({ token, patient: { id: patient._id, name: patient.name, cnicId: patient.cnicId } });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }

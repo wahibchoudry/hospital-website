@@ -4,11 +4,11 @@ const Prescription = require('../models/prescription');
 const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
-// GET /api/prescriptions/patient/:patientId — All prescriptions for a patient
-router.get('/patient/:patientId', authMiddleware, async (req, res) => {
+// GET /api/prescriptions/patient/:cnicId — All prescriptions for a patient
+router.get('/patient/:cnicId', authMiddleware, async (req, res) => {
   try {
     const patient = await Patient.findOne({
-      patientId: req.params.patientId.toUpperCase(),
+      cnicId: req.params.cnicId,
     });
 
     if (!patient) {
@@ -28,9 +28,9 @@ router.get('/patient/:patientId', authMiddleware, async (req, res) => {
 // POST /api/prescriptions — Add new prescription
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { patientId, diagnosis, medicines, notes, followUpDate } = req.body;
+    const { cnicId, diagnosis, medicines, notes, followUpDate } = req.body;
 
-    const patient = await Patient.findOne({ patientId: patientId.toUpperCase() });
+    const patient = await Patient.findOne({ cnicId });
     if (!patient) {
       return res.status(404).json({ message: 'Patient not found' });
     }

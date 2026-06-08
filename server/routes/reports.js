@@ -4,11 +4,11 @@ const TestReport = require('../models/TestReport');
 const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
-// GET /api/reports/patient/:patientId — get all reports for a patient
-router.get('/patient/:patientId', authMiddleware, async (req, res) => {
+// GET /api/reports/patient/:cnicId — get all reports for a patient
+router.get('/patient/:cnicId', authMiddleware, async (req, res) => {
   try {
     const patient = await Patient.findOne({
-      patientId: req.params.patientId.toUpperCase()
+      cnicId: req.params.cnicId
     });
     if (!patient) return res.status(404).json({ message: 'Patient not found' });
 
@@ -24,11 +24,9 @@ router.get('/patient/:patientId', authMiddleware, async (req, res) => {
 // POST /api/reports — add new test report
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { patientId, clinicName, testName, result, normalRange, status, notes, reportDate } = req.body;
+    const { cnicId, clinicName, testName, result, normalRange, status, notes, reportDate } = req.body;
 
-    const patient = await Patient.findOne({
-      patientId: patientId.toUpperCase()
-    });
+    const patient = await Patient.findOne({ cnicId });
     if (!patient) return res.status(404).json({ message: 'Patient not found' });
 
     const report = new TestReport({

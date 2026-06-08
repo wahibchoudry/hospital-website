@@ -15,7 +15,7 @@ const s = {
   searchRow: { display: 'flex', gap: '1rem' },
   input: {
     flex: 1, padding: '0.75rem 1rem', border: '2px solid #e2e8f0',
-    borderRadius: '8px', fontSize: '1rem', outline: 'none', textTransform: 'uppercase',
+    borderRadius: '8px', fontSize: '1rem', outline: 'none',
   },
   btn: {
     padding: '0.75rem 1.5rem', background: '#2b6cb0', color: 'white',
@@ -72,12 +72,12 @@ export default function Dashboard() {
   return (
     <div style={s.page}>
       <h1 style={s.welcome}>Good day, Dr. {doctor?.name} 👋</h1>
-      <p style={s.sub}>{doctor?.specialization} · Search any patient by their ID to view full medical history</p>
+      <p style={s.sub}>{doctor?.specialization} · Search any patient by their CNIC to view full medical history</p>
 
       <div style={s.statsRow}>
         <div style={s.statCard}>
           <div style={s.statNum}>🔍</div>
-          <div style={s.statLabel}>Search by Patient ID</div>
+          <div style={s.statLabel}>Search by CNIC</div>
         </div>
         <div style={s.statCard}>
           <div style={s.statNum}>📋</div>
@@ -90,12 +90,12 @@ export default function Dashboard() {
       </div>
 
       <div style={{ ...s.searchCard, marginTop: '2rem' }}>
-        <p style={s.searchTitle}>🔍 Search patient by ID</p>
+        <p style={s.searchTitle}>🔍 Search patient by CNIC</p>
         <form onSubmit={handleSearch}>
           <div style={s.searchRow}>
             <input
               style={s.input}
-              placeholder="Enter patient ID (e.g. PT001)"
+              placeholder="Enter CNIC number (e.g. 3520212345678)"
               value={query}
               onChange={e => setQuery(e.target.value)}
             />
@@ -108,11 +108,11 @@ export default function Dashboard() {
         {error && <div style={s.error}>⚠️ {error}</div>}
 
         {result && (
-          <div style={s.resultCard} onClick={() => navigate(`/patient/${result.patientId}`)}>
+          <div style={s.resultCard} onClick={() => navigate(`/patient/${result.cnicId}`)}>
             <div>
               <div style={s.patientName}>{result.name}</div>
               <div style={s.patientMeta}>
-                ID: {result.patientId} · Age: {result.age} · {result.gender} · Blood: {result.bloodGroup || 'N/A'}
+                CNIC: {result.cnicId} · Age: {result.age} · {result.gender} · Blood: {result.bloodGroup || 'N/A'}
               </div>
             </div>
             <button style={s.viewBtn}>View records →</button>

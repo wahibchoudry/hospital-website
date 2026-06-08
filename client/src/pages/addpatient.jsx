@@ -19,7 +19,7 @@ const s = {
 
 export default function AddPatient() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ patientId: '', name: '', age: '', gender: 'Male', phone: '', bloodGroup: '', address: '', allergies: 'None' });
+  const [form, setForm] = useState({ cnicId: '', name: '', age: '', gender: 'Male', phone: '', bloodGroup: '', address: '', allergies: 'None' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,8 +32,8 @@ export default function AddPatient() {
     setLoading(true);
     try {
       const { data } = await api.post('/patients', form);
-      setSuccess(`Patient ${data.name} (${data.patientId}) registered successfully!`);
-      setTimeout(() => navigate(`/patient/${data.patientId}`), 1500);
+      setSuccess(`Patient ${data.name} (${data.cnicId}) registered successfully!`);
+      setTimeout(() => navigate(`/patient/${data.cnicId}`), 1500);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to add patient');
     } finally {
@@ -54,8 +54,8 @@ export default function AddPatient() {
         <form onSubmit={handleSubmit}>
           <div style={s.row}>
             <div>
-              <label style={s.label}>Patient ID *</label>
-              <input style={{ ...s.input, textTransform: 'uppercase' }} placeholder="PT001" value={form.patientId} onChange={set('patientId')} required />
+              <label style={s.label}>CNIC Number *</label>
+              <input style={s.input} placeholder="3520212345678" value={form.cnicId} onChange={set('cnicId')} required />
             </div>
             <div>
               <label style={s.label}>Full name *</label>

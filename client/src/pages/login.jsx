@@ -31,7 +31,7 @@ const roles = [
 
 export default function Login() {
   const [role, setRole] = useState('doctor');
-  const [form, setForm] = useState({ email: '', password: '', patientId: '', phone: '', clinicCode: '' });
+  const [form, setForm] = useState({ email: '', password: '', cnicId: '', phone: '', clinicCode: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -48,7 +48,7 @@ export default function Login() {
         login(res.data.token, res.data.doctor, 'doctor');
         navigate('/doctor-dashboard');
       } else if (role === 'patient') {
-        res = await api.post('/auth/patient-login', { patientId: form.patientId, phone: form.phone });
+        res = await api.post('/auth/patient-login', { cnicId: form.cnicId, phone: form.phone });
         login(res.data.token, res.data.patient, 'patient');
         navigate('/patient-dashboard');
       } else {
@@ -91,8 +91,8 @@ export default function Login() {
           </>}
 
           {role === 'patient' && <>
-            <label style={s.label}>Patient ID</label>
-            <input style={{...s.input, textTransform:'uppercase'}} placeholder="e.g. PT001" value={form.patientId} onChange={e => setForm({...form, patientId: e.target.value})} required />
+            <label style={s.label}>CNIC Number</label>
+            <input style={s.input} placeholder="e.g. 3520212345678" value={form.cnicId} onChange={e => setForm({...form, cnicId: e.target.value})} required />
             <label style={s.label}>Phone number (registered with hospital)</label>
             <input style={s.input} placeholder="03001234567" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} required />
           </>}
@@ -111,7 +111,7 @@ export default function Login() {
           <p style={s.footer}>New doctor? <Link to="/register" style={s.footerLink}>Register here</Link></p>
         )}
         {role === 'patient' && (
-          <p style={s.footer}>Use your Patient ID and the phone number the doctor registered for you.</p>
+          <p style={s.footer}>Use your CNIC number and the phone number the doctor registered for you.</p>
         )}
         {role === 'clinic' && (
           <p style={s.footer}>Contact the hospital admin for your clinic access code.</p>

@@ -37,13 +37,13 @@ export default function PatientDashboard() {
 
   useEffect(() => {
     Promise.all([
-      api.get(`/prescriptions/patient/${user.patientId}`),
-      api.get(`/reports/patient/${user.patientId}`),
+      api.get(`/prescriptions/patient/${user.cnicId}`),
+      api.get(`/reports/patient/${user.cnicId}`),
     ]).then(([rxRes, repRes]) => {
       setData(rxRes.data);
       setReports(repRes.data.reports || []);
     }).catch(() => {}).finally(() => setLoading(false));
-  }, [user.patientId]);
+  }, [user.cnicId]);
 
   if (loading) return <div style={{ padding: '3rem', textAlign: 'center' }}>Loading your records...</div>;
 
@@ -59,7 +59,7 @@ export default function PatientDashboard() {
         <div style={s.infoCard}>
           <div>
             <div style={s.infoTitle}>{patient.name}</div>
-            <div style={{ fontSize: '0.9rem', opacity: 0.85 }}>Patient ID: {patient.patientId}</div>
+            <div style={{ fontSize: '0.9rem', opacity: 0.85 }}>CNIC: {patient.cnicId}</div>
             <div style={s.infoGrid}>
               <div style={s.infoItem}>Age: <span style={s.infoVal}>{patient.age}</span></div>
               <div style={s.infoItem}>Gender: <span style={s.infoVal}>{patient.gender}</span></div>
