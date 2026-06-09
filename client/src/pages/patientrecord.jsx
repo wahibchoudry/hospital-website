@@ -55,7 +55,7 @@ const s = {
 const emptyMed = { name: '', dosage: '', frequency: '', duration: '' };
 
 export default function PatientRecord() {
-  const { cnicId } = useParams();
+  const { patientId: cnicId } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
