@@ -7,24 +7,16 @@ const router = express.Router();
 const Patient = require('../models/patient');
 const authMiddleware = require('../middleware/auth');
 
-// GET /api/patients/search/:cnicId — Search patient by CNIC
 router.get('/search/:cnicId', authMiddleware, async (req, res) => {
   try {
-    const patient = await Patient.findOne({
-      cnicId: req.params.cnicId,
-    });
-
-    if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
-    }
-
+    const patient = await Patient.findOne({ cnicId: req.params.cnicId });
+    if (!patient) return res.status(404).json({ message: 'Patient not found' });
     res.json(patient);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
-// GET /api/patients — List all patients (with optional name search)
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const { name } = req.query;
@@ -36,22 +28,18 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// POST /api/patients — Add new patient
 router.post('/', authMiddleware, async (req, res) => {
   try {
+    console.log('BODY:', JSON.stringify(req.body));
     const { cnicId, name, age, gender, phone, bloodGroup, address, allergies } = req.body;
-
     const existing = await Patient.findOne({ cnicId });
-    if (existing) {
-      return res.status(400).json({ message: 'CNIC already registered' });
-    }
-
+    if (existing) return res.status(400).json({ message: 'CNIC already registered' });
     const patient = new Patient({ cnicId, name, age, gender, phone, bloodGroup, address, allergies });
     await patient.save();
-
     res.status(201).json(patient);
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    console.error('PATIENT ERROR:', err.message);
+    res.status(500).json({ message: err.message, error: err.message });
   }
 });
 
