@@ -1,7 +1,3 @@
-router.post('/', authMiddleware, async (req, res) => {
-  try {
-    console.log('BODY:', req.body); // add this
-    console.log('DECODED TOKEN:', req.doctor); // add this
 const express = require('express');
 const router = express.Router();
 const Patient = require('../models/patient');
